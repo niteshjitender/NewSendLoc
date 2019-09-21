@@ -45,8 +45,8 @@ public class MessageActive extends AppCompatActivity {
     private Uri uri ;
     private static final int CAMERA_REQUEST = 50;
     private static final String TAG = MessageActive.class.getSimpleName();
-    private String myString = "10101010101010101010000001010101010101010101011111010101" ;
-    private int lati = 0, longi = 0 ;
+    private String myString = "101010101010101010100000010101010101010101010111110101011010101010101010101000000101010101010101010101111101010110101010101010101010000001010101010101010101011111010101" ;
+    private double lati = 0, longi = 0 ;
     public MessageActive() {
     }
 
@@ -71,7 +71,8 @@ public class MessageActive extends AppCompatActivity {
 
         LocationRequest request = new LocationRequest();
         //Specify how often your app should request the device’s location//
-        request.setInterval(10000);
+        request.setInterval(20000);
+        ringtone.stop();
         //Get the most accurate location data available//
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(this);
@@ -87,17 +88,16 @@ public class MessageActive extends AppCompatActivity {
                     Location location = locationResult.getLastLocation();
                     if(location != null){
                         Toast.makeText(MessageActive.this, lati+" "+longi, Toast.LENGTH_SHORT).show();
-                        if((int) location.getLatitude() == lati && (int) location.getLongitude() == longi){
+                        if( location.getLatitude() == lati &&  location.getLongitude() == longi){
                             String phNo = "9728072620" ;
-                            String msg = location.getLatitude()+" "+location.getLongitude() ;
+                            String msg = "https://www.google.com/maps/search/?api=1&query="+location.getLatitude()+","+location.getLongitude() ;
                             SmsManager smsManager = SmsManager.getDefault();
                             for(int i = 0 ; i < 15 ; i++)
                                 aud.adjustVolume(AudioManager.ADJUST_RAISE,AudioManager.STREAM_RING);
                             smsManager.sendTextMessage(phNo, null, msg, null, null);
                             Toast.makeText(MessageActive.this, "Message Sent", Toast.LENGTH_SHORT).show();
                             long blinkDelay = 50; //Delay in ms
-                            ringtone.stop();
-                            ringtone.setLooping(true);
+                            //ringtone.setLooping(true);
                             ringtone.play();
                             for (int i = 0; i < myString.length(); i++) {
                                 if (myString.charAt(i) == '0') {
@@ -114,12 +114,13 @@ public class MessageActive extends AppCompatActivity {
                         }
                         else
                         {
+                            ringtone.stop();
                             Log.wtf("ab","test GIthub") ;
                             Toast.makeText(MessageActive.this, "message not sent", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    lati = (int) location.getLatitude() ;
-                    longi = (int) location.getLongitude() ;
+                    lati =   location.getLatitude() ;
+                    longi =  location.getLongitude() ;
                 }
             }, null);
         }

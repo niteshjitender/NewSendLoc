@@ -30,6 +30,7 @@ import androidx.core.content.ContextCompat;
 import android.location.Location;
 import android.content.pm.PackageManager;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -113,6 +114,7 @@ public class MessageActive extends AppCompatActivity {
                         }
                         else
                         {
+                            Log.wtf("ab","test GIthub") ;
                             Toast.makeText(MessageActive.this, "message not sent", Toast.LENGTH_SHORT).show();
                         }
                     }
